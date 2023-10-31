@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func AddUrls(r *gin.Engine) {
@@ -12,6 +13,7 @@ func AddUrls(r *gin.Engine) {
 }
 
 func InitializeRouter() (*gin.Engine, string) {
+	godotenv.Load()
 	r := gin.Default()
 	AddUrls(r)
 	port := os.Getenv("PORT")
