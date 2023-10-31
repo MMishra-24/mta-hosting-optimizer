@@ -12,7 +12,7 @@ import (
 func TestGetHostnamesWithActiveIPs(t *testing.T) {
 
 	r, _ := InitializeRouter()
-
+	os.Setenv("X", "")
 	// Create a test request to the /hostnames endpoint.
 	req, err := http.NewRequest("GET", "/hostnames", nil)
 	if err != nil {
@@ -24,7 +24,7 @@ func TestGetHostnamesWithActiveIPs(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, rr.Code)
 
-	assert.JSONEq(t, `{"hostnames":["mta-prod-1"]}`, rr.Body.String())
+	assert.JSONEq(t, `{"hostnames":["mta-prod-1", "mta-prod-3"]}`, rr.Body.String())
 }
 
 func TestGetHostnamesWithActiveIPsValidations(t *testing.T) {

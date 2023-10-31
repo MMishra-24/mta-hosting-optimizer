@@ -32,7 +32,7 @@ format:
   script:
     - go fmt $(go list ./... | grep -v /vendor/)
     - go vet $(go list ./... | grep -v /vendor/)
-    - go test -race $(go list ./... | grep -v /vendor/)
+    - go test -cover -race $(go list ./... | grep -v /vendor/)
 
 compile:
   stage: build
@@ -42,31 +42,5 @@ compile:
   artifacts:
     paths:
       - my-app
-
-deploy:
-  stage: deploy
-  image: docker:stable
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  script:
-    - |
-      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-        tag=""
-        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
-      else
-        tag=":$CI_COMMIT_REF_SLUG"
-        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
-      fi
-    - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
-    - docker push "$CI_REGISTRY_IMAGE${tag}"
-  rules:
-    - if: $CI_COMMIT_BRANCH
-      exists:
-        - Dockerfile
-  environment: production
-
-
 
 

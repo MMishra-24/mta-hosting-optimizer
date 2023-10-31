@@ -8,6 +8,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
+const DEFAULT_PORT = "8080"
+
 func AddUrls(r *gin.Engine) {
 	r.GET("/hostnames", GetHostnamesWithActiveIPs)
 }
@@ -18,7 +20,7 @@ func InitializeRouter() (*gin.Engine, string) {
 	AddUrls(r)
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080" // Set a default port if not specified in the environment.
+		port = DEFAULT_PORT // Set a default port if not specified in the environment.
 	}
 
 	// fmt.Printf("Server is running on port %s\n", port)

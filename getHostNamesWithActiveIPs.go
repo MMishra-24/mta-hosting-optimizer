@@ -29,6 +29,10 @@ func GetHostnamesWithActiveIPs(c *gin.Context) {
 	for _, ipConfig := range IpConfigData {
 		if ipConfig.Active {
 			countMap[ipConfig.Hostname]++
+		} else {
+			if _, ok := countMap[ipConfig.Hostname]; !ok {
+				countMap[ipConfig.Hostname] = 0
+			}
 		}
 	}
 
